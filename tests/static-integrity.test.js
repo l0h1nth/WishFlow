@@ -41,3 +41,10 @@ test("HTML exposes WishFlow branding and accessible catalog filters", async () =
   assert.match(html, /id="category-filter"/);
   assert.match(html, /id="catalog-empty"/);
 });
+
+test("HTML includes the accessible product detail dialog shell", async () => {
+  const html = await readFile(path.join(root, "index.html"), "utf8");
+  assert.match(html, /<dialog[^>]+id="product-detail-dialog"/);
+  assert.match(html, /aria-labelledby="product-detail-title"/);
+  assert.match(html, /data-close-product/);
+});

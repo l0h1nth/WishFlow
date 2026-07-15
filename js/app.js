@@ -2,7 +2,7 @@ import { productById, products } from "./data/products.js";
 import { filterProducts, getProductCategories } from "./services/catalog-filter.js";
 import { createWishlistStorage } from "./services/wishlist-storage.js";
 import { WishlistError, WishlistStore } from "./state/wishlist-store.js";
-import { productGridTemplate, wishlistsTemplate } from "./ui/templates.js";
+import { productDetailTemplate, productGridTemplate, wishlistsTemplate } from "./ui/templates.js";
 
 const validProductIds = new Set(products.map((product) => product.id));
 const storage = createWishlistStorage(window.localStorage, validProductIds);
@@ -15,6 +15,8 @@ const elements = {
   productSearch: document.querySelector("#product-search"),
   categoryFilter: document.querySelector("#category-filter"),
   catalogEmpty: document.querySelector("#catalog-empty"),
+  productDetailDialog: document.querySelector("#product-detail-dialog"),
+  productDetailContent: document.querySelector("#product-detail-content"),
   wishlistContent: document.querySelector("#wishlist-content"),
   wishlistCount: document.querySelector("#wishlist-count"),
   createDialog: document.querySelector("#create-dialog"),
@@ -98,6 +100,13 @@ function openCreateDialog() {
   window.setTimeout(() => document.querySelector("#wishlist-name").focus(), 0);
 }
 
+function openProductDetails(productId) {
+  const product = productById.get(productId);
+  if (!product) return;
+  elements.productDetailContent.innerHTML = productDetailTemplate(product, store.getLists());
+  elements.productDetailDialog.showModal();
+}
+
 function askForConfirmation({ title, message, buttonLabel, action }) {
   elements.confirmTitle.textContent = title;
   elements.confirmMessage.textContent = message;
@@ -126,6 +135,24 @@ document.addEventListener("click", (event) => {
     elements.catalogFilters.reset();
     renderCatalog();
     elements.productSearch.focus();
+    return;
+  }
+
+  const detailButton = event.target.closest("[data-view-product]");
+  if (detailButton) {
+    openProductDetails(detailButton.dataset.viewProduct);
+    return;
+  }
+
+  const productCard = event.target.closest("[data-product-id]");
+  const interactiveTarget = event.target.closest("a, button, form, input, label, select, textarea");
+  if (productCard && !interactiveTarget) {
+    openProductDetails(productCard.dataset.productId);
+    return;
+  }
+
+  if (event.target.closest("[data-close-product]")) {
+    closeDialog(elements.productDetailDialog);
     return;
   }
 
@@ -273,6 +300,10 @@ elements.createForm.addEventListener("submit", (event) => {
 
 elements.createDialog.addEventListener("click", (event) => {
   if (event.target === elements.createDialog) closeDialog(elements.createDialog);
+});
+
+elements.productDetailDialog.addEventListener("click", (event) => {
+  if (event.target === elements.productDetailDialog) closeDialog(elements.productDetailDialog);
 });
 
 elements.confirmDialog.addEventListener("click", (event) => {

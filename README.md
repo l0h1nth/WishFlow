@@ -1,6 +1,6 @@
 # WishFlow
 
-A responsive, static e-commerce catalog with product search, category filtering, and multiple named wishlists. It uses only browser-native HTML, CSS, and JavaScript, so it runs locally or on GitHub Pages without a backend, package install, or build step.
+A responsive, static e-commerce catalog with product details, product search, category filtering, and multiple named wishlists. It uses only browser-native HTML, CSS, and JavaScript, so it runs locally or on GitHub Pages without a backend, package install, or build step.
 
 ## Run locally
 

@@ -382,6 +382,7 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
+  cursor: pointer;
 }
 
 .product-image-wrap {
@@ -452,6 +453,20 @@
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 0.5rem;
   margin-top: auto;
+}
+
+.product-card-actions {
+  display: grid;
+  gap: 0.55rem;
+  margin-top: auto;
+}
+
+.product-card-actions .add-form {
+  margin-top: 0;
+}
+
+.view-details-button {
+  width: 100%;
 }
 
 .select-input,
@@ -730,6 +745,71 @@
 .dialog::backdrop {
   background: rgb(31 31 27 / 62%);
   backdrop-filter: blur(3px);
+}
+
+.product-detail-dialog {
+  width: min(940px, calc(100% - 2rem));
+}
+
+.product-detail-card {
+  max-height: calc(100vh - 2rem);
+  padding: 1.5rem;
+  overflow: auto;
+}
+
+.product-detail-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: 2.25rem;
+  align-items: center;
+}
+
+.product-detail-media {
+  aspect-ratio: 1 / 1;
+  margin-bottom: 0;
+}
+
+.product-detail-info {
+  min-width: 0;
+  padding: 2rem 1.25rem 2rem 0;
+}
+
+.product-detail-info h2 {
+  max-width: 420px;
+  margin-bottom: 0.65rem;
+  padding-right: 2.5rem;
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+}
+
+.product-detail-price {
+  margin-bottom: 1.35rem;
+  color: var(--sage-dark);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.product-detail-description {
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.product-detail-form {
+  margin-top: 1.6rem;
+  padding-top: 1.35rem;
+  border-top: 1px solid var(--line);
+}
+
+.product-detail-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.65rem;
+}
+
+.product-detail-close {
+  z-index: 2;
 }
 
 .dialog-card {

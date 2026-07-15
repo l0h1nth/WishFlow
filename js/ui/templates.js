@@ -18,7 +18,7 @@ function wishlistOptions(lists, selectedId = "") {
 
 export function productGridTemplate(products, lists) {
   return products.map((product) => `
-    <article class="product-card">
+    <article class="product-card" data-product-id="${escapeHtml(product.id)}">
       <div class="product-image-wrap">
         <img class="product-image" src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}" width="640" height="800">
         <span class="category-pill">${escapeHtml(product.category)}</span>
@@ -28,15 +28,44 @@ export function productGridTemplate(products, lists) {
         <span class="product-price">${formatPrice(product.price)}</span>
       </div>
       <p class="product-description">${escapeHtml(product.description)}</p>
-      <form class="add-form" data-add-product="${escapeHtml(product.id)}">
-        <label class="visually-hidden" for="list-${escapeHtml(product.id)}">Wishlist for ${escapeHtml(product.name)}</label>
-        <select class="select-input" id="list-${escapeHtml(product.id)}" name="listId" ${lists.length ? "" : "disabled"}>
-          ${wishlistOptions(lists)}
-        </select>
-        <button class="button button-secondary" type="submit" ${lists.length ? "" : "disabled"}>Save <span aria-hidden="true">♡</span></button>
-      </form>
+      <div class="product-card-actions">
+        <button class="button button-secondary view-details-button" type="button" data-view-product="${escapeHtml(product.id)}">View details</button>
+        <form class="add-form" data-add-product="${escapeHtml(product.id)}">
+          <label class="visually-hidden" for="list-${escapeHtml(product.id)}">Wishlist for ${escapeHtml(product.name)}</label>
+          <select class="select-input" id="list-${escapeHtml(product.id)}" name="listId" ${lists.length ? "" : "disabled"}>
+            ${wishlistOptions(lists)}
+          </select>
+          <button class="button button-secondary" type="submit" ${lists.length ? "" : "disabled"}>Save <span aria-hidden="true">♡</span></button>
+        </form>
+      </div>
     </article>
   `).join("");
+}
+
+export function productDetailTemplate(product, lists) {
+  return `
+    <div class="product-detail-layout">
+      <div class="product-image-wrap product-detail-media">
+        <img class="product-image" src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}" width="640" height="800">
+        <span class="category-pill">${escapeHtml(product.category)}</span>
+      </div>
+      <div class="product-detail-info">
+        <p class="eyebrow">${escapeHtml(product.category)}</p>
+        <h2 id="product-detail-title">${escapeHtml(product.name)}</h2>
+        <p class="product-detail-price">${formatPrice(product.price)}</p>
+        <p class="product-detail-description" id="product-detail-description">${escapeHtml(product.description)}</p>
+        <form class="product-detail-form" data-add-product="${escapeHtml(product.id)}">
+          <label class="field-label" for="product-detail-wishlist">Add to wishlist</label>
+          <div class="product-detail-actions">
+            <select class="select-input" id="product-detail-wishlist" name="listId" ${lists.length ? "" : "disabled"}>
+              ${wishlistOptions(lists)}
+            </select>
+            <button class="button button-primary" type="submit" ${lists.length ? "" : "disabled"}>Add to wishlist <span aria-hidden="true">♡</span></button>
+          </div>
+        </form>
+      </div>
+    </div>
+  `;
 }
 
 function savedProductTemplate(product, listId) {

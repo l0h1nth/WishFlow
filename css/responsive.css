@@ -80,6 +80,31 @@
     min-height: 360px;
   }
 
+  .product-detail-dialog {
+    width: calc(100% - 1rem);
+  }
+
+  .product-detail-card {
+    padding: 1rem;
+  }
+
+  .product-detail-layout {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .product-detail-media {
+    aspect-ratio: 16 / 9;
+  }
+
+  .product-detail-info {
+    padding: 0.25rem 0.25rem 0.5rem;
+  }
+
+  .product-detail-info h2 {
+    padding-right: 0;
+  }
+
   .catalog {
     padding-block: 4rem 5rem;
   }
@@ -142,6 +167,10 @@
     aspect-ratio: 4 / 3;
   }
 
+  .product-detail-media {
+    aspect-ratio: 16 / 9;
+  }
+
   .section-heading {
     align-items: start;
     flex-direction: column;
@@ -173,6 +202,14 @@
 
   .add-form {
     grid-template-columns: 1fr;
+  }
+
+  .product-detail-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .product-detail-actions .button {
+    width: 100%;
   }
 
   .dialog-card {
