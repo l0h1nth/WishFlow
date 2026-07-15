@@ -1,4 +1,5 @@
-export const STORAGE_KEY = "kindred-goods:wishlists";
+export const STORAGE_KEY = "wishflow:wishlists";
+export const LEGACY_STORAGE_KEY = "kindred-goods:wishlists";
 export const STORAGE_VERSION = 1;
 
 const emptyState = () => ({ version: STORAGE_VERSION, lists: [] });
@@ -41,11 +42,26 @@ export function createWishlistStorage(storage, validProductIds) {
 
       try {
         raw = storage.getItem(STORAGE_KEY);
+        let sourceKey = STORAGE_KEY;
+        if (raw === null) {
+          raw = storage.getItem(LEGACY_STORAGE_KEY);
+          sourceKey = LEGACY_STORAGE_KEY;
+        }
         if (raw === null) return { payload: emptyState(), recovered: false };
 
         const parsed = JSON.parse(raw);
         const payload = normalizePayload(parsed, validProductIds);
         const recovered = JSON.stringify(parsed) !== JSON.stringify(payload);
+
+        if (sourceKey === LEGACY_STORAGE_KEY) {
+          try {
+            storage.setItem(STORAGE_KEY, JSON.stringify(payload));
+            storage.removeItem?.(LEGACY_STORAGE_KEY);
+          } catch {
+            // The valid in-memory payload remains usable if migration cannot be persisted.
+          }
+        }
+
         return { payload, recovered };
       } catch {
         return { payload: emptyState(), recovered: true };

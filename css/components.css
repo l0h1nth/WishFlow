@@ -319,6 +319,58 @@
   font-size: 0.82rem;
 }
 
+.catalog-toolbar {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) minmax(180px, 0.36fr) auto;
+  gap: 0.85rem;
+  align-items: end;
+  margin-bottom: 2rem;
+  padding: 1.15rem;
+  background: rgb(255 253 249 / 72%);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+
+.catalog-field {
+  min-width: 0;
+}
+
+.catalog-field .field-label {
+  margin-bottom: 0.3rem;
+}
+
+.search-input-wrap {
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 0.85rem;
+  color: var(--muted);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.25rem;
+  pointer-events: none;
+  transform: translateY(-50%) rotate(-15deg);
+}
+
+.search-input {
+  padding-left: 2.5rem;
+}
+
+.clear-filters {
+  white-space: nowrap;
+}
+
+.catalog-empty {
+  min-height: 320px;
+}
+
+.catalog-empty[hidden] {
+  display: none;
+}
+
 .product-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));

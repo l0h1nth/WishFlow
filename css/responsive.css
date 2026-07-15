@@ -1,4 +1,13 @@
 @media (max-width: 960px) {
+  .catalog-toolbar {
+    grid-template-columns: minmax(0, 1fr) minmax(170px, 0.45fr);
+  }
+
+  .catalog-toolbar .clear-filters {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+
   .product-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -115,6 +124,15 @@
 }
 
 @media (max-width: 500px) {
+  .catalog-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .catalog-toolbar .clear-filters {
+    grid-column: auto;
+    width: 100%;
+  }
+
   .product-grid {
     grid-template-columns: 1fr;
     gap-block: 2.5rem;

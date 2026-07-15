@@ -1,6 +1,6 @@
-# Kindred Goods
+# WishFlow
 
-A responsive, static e-commerce catalog with multiple named wishlists. It uses only browser-native HTML, CSS, and JavaScript, so it runs locally or on GitHub Pages without a backend, package install, or build step.
+A responsive, static e-commerce catalog with product search, category filtering, and multiple named wishlists. It uses only browser-native HTML, CSS, and JavaScript, so it runs locally or on GitHub Pages without a backend, package install, or build step.
 
 ## Run locally
 
@@ -46,7 +46,7 @@ find js tests -type f -name '*.js' -print0 | xargs -0 -n1 node --check
 
 ## Data model
 
-Wishlists are stored under the versioned `kindred-goods:wishlists` localStorage key:
+Wishlists are stored under the versioned `wishflow:wishlists` localStorage key. Existing data under the legacy `kindred-goods:wishlists` key is migrated automatically:
 
 ```json
 {

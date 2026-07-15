@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  LEGACY_STORAGE_KEY,
   STORAGE_KEY,
   createWishlistStorage,
   normalizePayload,
@@ -9,12 +10,13 @@ import {
 
 const validIds = new Set(["product-a", "product-b"]);
 
-function memoryStorage(initialValue = null) {
+function memoryStorage(initialValue = null, initialKey = STORAGE_KEY) {
   const values = new Map();
-  if (initialValue !== null) values.set(STORAGE_KEY, initialValue);
+  if (initialValue !== null) values.set(initialKey, initialValue);
   return {
     getItem(key) { return values.get(key) ?? null; },
     setItem(key, value) { values.set(key, value); },
+    removeItem(key) { values.delete(key); },
   };
 }
 
@@ -53,4 +55,14 @@ test("round-trips a valid payload through storage", () => {
   const payload = { version: 1, lists: [{ id: "one", name: "Home", productIds: ["product-b"] }] };
   assert.equal(storage.save(payload), true);
   assert.deepEqual(storage.load(), { payload, recovered: false });
+});
+
+test("migrates valid wishlist data from the legacy branded key", () => {
+  const payload = { version: 1, lists: [{ id: "one", name: "Home", productIds: ["product-a"] }] };
+  const target = memoryStorage(JSON.stringify(payload), LEGACY_STORAGE_KEY);
+  const storage = createWishlistStorage(target, validIds);
+
+  assert.deepEqual(storage.load(), { payload, recovered: false });
+  assert.equal(target.getItem(STORAGE_KEY), JSON.stringify(payload));
+  assert.equal(target.getItem(LEGACY_STORAGE_KEY), null);
 });

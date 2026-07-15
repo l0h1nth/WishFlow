@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="A calm, local-first storefront with named wishlists.">
     <meta name="theme-color" content="#f6f3ed">
-    <title>Kindred Goods</title>
+    <title>WishFlow</title>
     <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/components.css">
@@ -16,9 +16,9 @@
     <a class="skip-link" href="#main-content">Skip to content</a>
 
     <header class="site-header">
-      <a class="brand" href="#shop" aria-label="Kindred Goods home">
-        <span class="brand-mark" aria-hidden="true">K</span>
-        <span>Kindred Goods</span>
+      <a class="brand" href="#shop" aria-label="WishFlow home">
+        <span class="brand-mark" aria-hidden="true">W</span>
+        <span>WishFlow</span>
       </a>
       <nav class="primary-nav" aria-label="Primary navigation">
         <a class="nav-link" href="#shop" data-route-link="shop">Shop</a>
@@ -56,9 +56,33 @@
               <p class="eyebrow">The collection</p>
               <h2 id="catalog-title">Made for the everyday</h2>
             </div>
-            <p class="product-total" id="product-total"></p>
+            <p class="product-total" id="product-total" aria-live="polite"></p>
           </div>
+          <form class="catalog-toolbar" id="catalog-filters" role="search" aria-label="Filter products">
+            <div class="catalog-field catalog-search-field">
+              <label class="field-label" for="product-search">Search products</label>
+              <div class="search-input-wrap">
+                <span class="search-icon" aria-hidden="true">⌕</span>
+                <input class="text-input search-input" id="product-search" name="query" type="search" autocomplete="off" placeholder="Name, description, or category">
+              </div>
+            </div>
+            <div class="catalog-field">
+              <label class="field-label" for="category-filter">Category</label>
+              <select class="select-input" id="category-filter" name="category">
+                <option value="">All categories</option>
+              </select>
+            </div>
+            <button class="button button-secondary clear-filters" type="button" data-clear-filters hidden>Clear filters</button>
+          </form>
           <div class="product-grid" id="product-grid"></div>
+          <div class="empty-state catalog-empty" id="catalog-empty" role="status" hidden>
+            <div>
+              <span class="empty-state-icon" aria-hidden="true">⌕</span>
+              <h3>No products found</h3>
+              <p>Try a different search or category, or clear your filters to see the full collection.</p>
+              <button class="button button-secondary" type="button" data-clear-filters>Clear filters</button>
+            </div>
+          </div>
         </section>
       </section>
 
@@ -79,7 +103,7 @@
 
     <footer class="site-footer">
       <div class="shell footer-inner">
-        <span class="brand footer-brand"><span class="brand-mark" aria-hidden="true">K</span> Kindred Goods</span>
+        <span class="brand footer-brand"><span class="brand-mark" aria-hidden="true">W</span> WishFlow</span>
         <p>Thoughtful objects for unhurried living.</p>
       </div>
     </footer>

@@ -1,4 +1,5 @@
 import { productById, products } from "./data/products.js";
+import { filterProducts, getProductCategories } from "./services/catalog-filter.js";
 import { createWishlistStorage } from "./services/wishlist-storage.js";
 import { WishlistError, WishlistStore } from "./state/wishlist-store.js";
 import { productGridTemplate, wishlistsTemplate } from "./ui/templates.js";
@@ -10,6 +11,10 @@ const store = new WishlistStore({ products, storage });
 const elements = {
   productGrid: document.querySelector("#product-grid"),
   productTotal: document.querySelector("#product-total"),
+  catalogFilters: document.querySelector("#catalog-filters"),
+  productSearch: document.querySelector("#product-search"),
+  categoryFilter: document.querySelector("#category-filter"),
+  catalogEmpty: document.querySelector("#catalog-empty"),
   wishlistContent: document.querySelector("#wishlist-content"),
   wishlistCount: document.querySelector("#wishlist-count"),
   createDialog: document.querySelector("#create-dialog"),
@@ -34,12 +39,28 @@ function render() {
   const lists = store.getLists();
   if (!lists.some((list) => list.id === activeListId)) activeListId = lists[0]?.id ?? null;
 
-  elements.productGrid.innerHTML = productGridTemplate(products, lists);
+  renderCatalog(lists);
   elements.wishlistContent.innerHTML = wishlistsTemplate(lists, activeListId, productById);
-  elements.productTotal.textContent = `${products.length} considered pieces`;
   elements.wishlistCount.textContent = String(lists.length);
   elements.wishlistCount.setAttribute("aria-label", `${lists.length} ${lists.length === 1 ? "wishlist" : "wishlists"}`);
   renderRoute();
+}
+
+function renderCatalog(lists = store.getLists()) {
+  const query = elements.productSearch.value;
+  const category = elements.categoryFilter.value;
+  const filteredProducts = filterProducts(products, { query, category });
+  const hasFilters = Boolean(query.trim() || category);
+
+  elements.productGrid.innerHTML = productGridTemplate(filteredProducts, lists);
+  elements.productGrid.hidden = filteredProducts.length === 0;
+  elements.catalogEmpty.hidden = filteredProducts.length !== 0;
+  elements.productTotal.textContent = hasFilters
+    ? `${filteredProducts.length} of ${products.length} pieces`
+    : `${products.length} considered pieces`;
+  document.querySelectorAll("[data-clear-filters]").forEach((button) => {
+    if (button.closest(".catalog-toolbar")) button.hidden = !hasFilters;
+  });
 }
 
 function renderRoute() {
@@ -51,7 +72,7 @@ function renderRoute() {
     if (link.dataset.routeLink === route) link.setAttribute("aria-current", "page");
     else link.removeAttribute("aria-current");
   });
-  document.title = route === "wishlists" ? "Your Wishlists — Kindred Goods" : "Kindred Goods";
+  document.title = route === "wishlists" ? "Your Wishlists — WishFlow" : "WishFlow";
 }
 
 function showToast(message, tone = "success") {
@@ -101,6 +122,13 @@ function revealActiveList() {
 }
 
 document.addEventListener("click", (event) => {
+  if (event.target.closest("[data-clear-filters]")) {
+    elements.catalogFilters.reset();
+    renderCatalog();
+    elements.productSearch.focus();
+    return;
+  }
+
   const openCreate = event.target.closest("[data-open-create]");
   if (openCreate) {
     openCreateDialog();
@@ -167,6 +195,10 @@ document.addEventListener("click", (event) => {
     });
   }
 });
+
+elements.catalogFilters.addEventListener("submit", (event) => event.preventDefault());
+elements.productSearch.addEventListener("input", () => renderCatalog());
+elements.categoryFilter.addEventListener("change", () => renderCatalog());
 
 document.addEventListener("submit", (event) => {
   const addForm = event.target.closest("[data-add-product]");
@@ -266,6 +298,13 @@ document.addEventListener("keydown", (event) => {
 });
 
 window.addEventListener("hashchange", renderRoute);
+
+for (const category of getProductCategories(products)) {
+  const option = document.createElement("option");
+  option.value = category;
+  option.textContent = category;
+  elements.categoryFilter.append(option);
+}
 
 if (!window.location.hash) window.history.replaceState(null, "", "#shop");
 render();

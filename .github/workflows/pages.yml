@@ -35,7 +35,7 @@ jobs:
 
       - name: Smoke-test the static site
         run: |
-          python3 -m http.server 4173 > /tmp/kindred-http.log 2>&1 &
+          python3 -m http.server 4173 > /tmp/wishflow-http.log 2>&1 &
           server_pid=$!
           trap 'kill $server_pid' EXIT
           for attempt in 1 2 3 4 5; do

@@ -33,3 +33,11 @@ test("HTML references the required local styles and application entry point", as
   assert.match(html, /<meta name="viewport"/);
   assert.match(html, /<main id="main-content"/);
 });
+
+test("HTML exposes WishFlow branding and accessible catalog filters", async () => {
+  const html = await readFile(path.join(root, "index.html"), "utf8");
+  assert.match(html, /<title>WishFlow<\/title>/);
+  assert.match(html, /id="product-search"/);
+  assert.match(html, /id="category-filter"/);
+  assert.match(html, /id="catalog-empty"/);
+});
