@@ -120,8 +120,8 @@
     gap-block: 2.5rem;
   }
 
-  .product-image {
-    aspect-ratio: 5 / 5.6;
+  .product-image-wrap {
+    aspect-ratio: 4 / 3;
   }
 
   .section-heading {

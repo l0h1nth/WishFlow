@@ -322,25 +322,30 @@
 .product-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 2.8rem 1.4rem;
+  gap: 2.25rem 1.4rem;
+  align-items: stretch;
 }
 
 .product-card {
+  display: flex;
+  flex-direction: column;
   min-width: 0;
 }
 
 .product-image-wrap {
   position: relative;
   overflow: hidden;
-  margin-bottom: 1.15rem;
+  aspect-ratio: 5 / 4;
+  margin-bottom: 0.9rem;
   background: var(--paper-deep);
   border-radius: var(--radius-md);
 }
 
 .product-image {
   width: 100%;
-  aspect-ratio: 4 / 5;
+  height: 100%;
   object-fit: cover;
+  object-position: center;
   transition: transform 350ms ease;
 }
 
@@ -384,7 +389,7 @@
 
 .product-description {
   min-height: 3.2em;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
   color: var(--muted);
   font-size: 0.82rem;
   line-height: 1.55;
@@ -394,6 +399,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 0.5rem;
+  margin-top: auto;
 }
 
 .select-input,
